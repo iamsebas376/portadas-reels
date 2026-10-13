@@ -234,7 +234,7 @@
   }
   .preview canvas { width: 100%; height: 100%; display: block; }
   .guide {
-    position: absolute; left: 0; right: 0; top: 17.8%; height: 75%; /* = CROP_TOP / H */
+    position: absolute; left: 0; right: 0; top: 12.5%; height: 75%;
     border-top: 2px dashed rgba(255,255,255,.5);
     border-bottom: 2px dashed rgba(255,255,255,.5);
     pointer-events: none;
@@ -383,10 +383,6 @@
         <div class="slider-head"><label for="radius">Esquinas redondeadas</label><output id="radiusOut">0</output></div>
         <input type="range" id="radius" min="0" max="60" value="0">
       </div>
-      <div class="slider">
-        <div class="slider-head"><label for="offset">Posición vertical</label><output id="offsetOut">0</output></div>
-        <input type="range" id="offset" min="-200" max="200" step="5" value="0">
-      </div>
     </div>
 
   </section>
@@ -416,9 +412,6 @@
 
 <script>
 const W = 1080, H = 1920;
-// Zona 3:4 (1080x1440) que Instagram muestra en la cuadrícula del perfil. Medido en capturas
-// reales: no está centrada, empieza ~342px desde arriba.
-const CROP_TOP = 342, CROP_H = 1440;
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 const $ = id => document.getElementById(id);
@@ -447,7 +440,6 @@ const state = {
   dark: 0.35,
   size: 0.70,
   radius: 0,
-  offset: 0,
   grain: true,
   palette: null,
 };
@@ -664,8 +656,8 @@ function render() {
   const gap1 = size * 0.065;
   const gap2 = artist.px * 0.35;
   const blockH = size + gap1 + titleLH * title.lines.length + gap2 + artist.px * 1.2;
-  // centrado dentro de la zona que se ve en el perfil
-  const y = Math.round(CROP_TOP + (CROP_H - blockH) / 2 + state.offset);
+  // centrado dentro de la zona 3:4 del perfil, un poco hacia arriba como el reproductor de Spotify
+  const y = Math.round((H - blockH) / 2 - H * 0.01);
 
   // carátula
   ctx.save();
@@ -876,7 +868,6 @@ function slider(id, outId, fmt, apply) {
 slider('dark', 'darkOut', v => v + '%', v => state.dark = v / 100);
 slider('size', 'sizeOut', v => v + '%', v => state.size = v / 100);
 slider('radius', 'radiusOut', v => String(v), v => state.radius = v);
-slider('offset', 'offsetOut', v => (v > 0 ? '↓ ' : v < 0 ? '↑ ' : '') + Math.abs(v), v => state.offset = v);
 $('grain').onchange = e => { state.grain = e.target.checked; render(); };
 $('toggleGuide').onclick = e => {
   const btn = e.currentTarget;
