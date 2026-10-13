@@ -383,6 +383,10 @@
         <div class="slider-head"><label for="radius">Esquinas redondeadas</label><output id="radiusOut">0</output></div>
         <input type="range" id="radius" min="0" max="60" value="0">
       </div>
+      <div class="slider">
+        <div class="slider-head"><label for="offset">Posición vertical</label><output id="offsetOut">0</output></div>
+        <input type="range" id="offset" min="-200" max="200" step="5" value="0">
+      </div>
     </div>
 
   </section>
@@ -440,6 +444,7 @@ const state = {
   dark: 0.35,
   size: 0.70,
   radius: 0,
+  offset: 0,
   grain: true,
   palette: null,
 };
@@ -656,8 +661,9 @@ function render() {
   const gap1 = size * 0.065;
   const gap2 = artist.px * 0.35;
   const blockH = size + gap1 + titleLH * title.lines.length + gap2 + artist.px * 1.2;
-  // centrado dentro de la zona 3:4 del perfil, un poco hacia arriba como el reproductor de Spotify
-  const y = Math.round((H - blockH) / 2 - H * 0.01);
+  // Un poco por debajo del centro: en el feed, Instagram recorta la zona 3:4 algo más abajo
+  // del centro y el contador de vistas tapa la parte inferior de la miniatura.
+  const y = Math.round((H - blockH) / 2 + 55 + state.offset);
 
   // carátula
   ctx.save();
@@ -868,6 +874,7 @@ function slider(id, outId, fmt, apply) {
 slider('dark', 'darkOut', v => v + '%', v => state.dark = v / 100);
 slider('size', 'sizeOut', v => v + '%', v => state.size = v / 100);
 slider('radius', 'radiusOut', v => String(v), v => state.radius = v);
+slider('offset', 'offsetOut', v => (v > 0 ? '↓ ' : v < 0 ? '↑ ' : '') + Math.abs(v), v => state.offset = v);
 $('grain').onchange = e => { state.grain = e.target.checked; render(); };
 $('toggleGuide').onclick = e => {
   const btn = e.currentTarget;
