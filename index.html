@@ -25,6 +25,7 @@
   }
   * { box-sizing: border-box; }
   html { -webkit-text-size-adjust: 100%; }
+  html, body { overflow-x: clip; } /* red de seguridad: nunca scroll horizontal */
   body {
     margin: 0;
     background: var(--bg);
@@ -60,6 +61,8 @@
     margin: 0 auto;
     padding: 28px 32px 40px;
   }
+  /* evita que contenido largo (p. ej. resultados de búsqueda) ensanche la página */
+  .app > *, .card > * { min-width: 0; }
   header { grid-area: head; padding-bottom: 20px; }
   header h1 { margin: 0; font-size: 26px; font-weight: 800; letter-spacing: -0.02em; }
   header p { margin: 4px 0 0; color: var(--muted); }
@@ -173,7 +176,8 @@
   .seg button.on { background: var(--text); color: #111; }
 
   /* selector de tipografía */
-  .fonts { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+  .fonts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+  .font-opt { min-width: 0; }
   .font-opt {
     display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
     background: var(--panel-2);
@@ -209,7 +213,7 @@
   .result {
     display: flex; gap: 12px; align-items: center; text-align: left;
     border-radius: 10px; padding: 6px; background: transparent; border: 0;
-    color: var(--text); font: inherit; cursor: pointer; width: 100%;
+    color: var(--text); font: inherit; cursor: pointer; width: 100%; min-width: 0;
   }
   .result:hover { background: var(--panel-2); }
   .result img { width: 44px; height: 44px; border-radius: 4px; flex: 0 0 auto; background: var(--panel-2); }
@@ -281,7 +285,7 @@
       backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
       border-top: 1px solid var(--line);
     }
-    .actions .btn { flex: 1; padding: 13px 12px; }
+    .actions .btn { flex: 1; min-width: 0; padding: 13px 12px; }
     .actions .btn.jpg { flex: 0 0 auto; }
     .card { padding: 16px; }
   }
