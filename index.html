@@ -234,7 +234,7 @@
   }
   .preview canvas { width: 100%; height: 100%; display: block; }
   .guide {
-    position: absolute; left: 0; right: 0; top: 12.5%; height: 75%;
+    position: absolute; left: 0; right: 0; top: 17.8%; height: 75%; /* = CROP_TOP / H */
     border-top: 2px dashed rgba(255,255,255,.5);
     border-bottom: 2px dashed rgba(255,255,255,.5);
     pointer-events: none;
@@ -416,6 +416,9 @@
 
 <script>
 const W = 1080, H = 1920;
+// Zona 3:4 (1080x1440) que Instagram muestra en la cuadrícula del perfil. Medido en capturas
+// reales: no está centrada, empieza ~342px desde arriba.
+const CROP_TOP = 342, CROP_H = 1440;
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 const $ = id => document.getElementById(id);
@@ -661,9 +664,8 @@ function render() {
   const gap1 = size * 0.065;
   const gap2 = artist.px * 0.35;
   const blockH = size + gap1 + titleLH * title.lines.length + gap2 + artist.px * 1.2;
-  // Un poco por debajo del centro: en el feed, Instagram recorta la zona 3:4 algo más abajo
-  // del centro y el contador de vistas tapa la parte inferior de la miniatura.
-  const y = Math.round((H - blockH) / 2 + 55 + state.offset);
+  // centrado dentro de la zona que se ve en el perfil
+  const y = Math.round(CROP_TOP + (CROP_H - blockH) / 2 + state.offset);
 
   // carátula
   ctx.save();
