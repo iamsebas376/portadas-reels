@@ -301,7 +301,7 @@
 <main class="app">
   <header>
     <h1>Portadas de Reels</h1>
-    <p>Pega un link de Spotify, ajusta el estilo y descarga en 1080 × 1920.</p>
+    <p>Busca una canción, ajusta el estilo y descarga en 1080 × 1920.</p>
   </header>
 
   <section class="controls">
@@ -309,20 +309,20 @@
     <div class="card">
       <h2>Canción</h2>
       <div class="seg" id="sourceSeg" role="tablist">
-        <button data-src="spotify" class="on">Link de Spotify</button>
-        <button data-src="search">Buscar</button>
+        <button data-src="search" class="on">Buscar</button>
+        <button data-src="spotify">Link de Spotify</button>
       </div>
 
-      <div id="srcSpotify" class="input-row">
-        <input type="url" id="spotifyUrl" placeholder="https://open.spotify.com/track/…" inputmode="url" autocomplete="off">
-        <button class="btn primary" id="loadSpotify">Cargar</button>
-      </div>
-
-      <div id="srcSearch" hidden>
+      <div id="srcSearch">
         <div class="input-row">
           <input type="text" id="searchTerm" placeholder="Ej: hotel california eagles" enterkeyhint="search">
           <button class="btn primary" id="doSearch">Buscar</button>
         </div>
+      </div>
+
+      <div id="srcSpotify" class="input-row" hidden>
+        <input type="url" id="spotifyUrl" placeholder="https://open.spotify.com/track/…" inputmode="url" autocomplete="off">
+        <button class="btn primary" id="loadSpotify">Cargar</button>
       </div>
       <div class="results" id="results"></div>
 
