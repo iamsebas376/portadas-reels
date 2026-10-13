@@ -1,0 +1,883 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0e0e10">
+<title>Portadas de Reels</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800;900&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0e0e10;
+    --panel: #17171a;
+    --panel-2: #222226;
+    --line: #2c2c31;
+    --line-strong: #45454d;
+    --text: #f2f2f2;
+    --muted: #9a9aa2;
+    --accent: #1ed760;
+    --accent-ink: #062b13;
+    --danger: #ff6b6b;
+    --radius: 16px;
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Figtree", system-ui, sans-serif;
+    font-size: 15px;
+    line-height: 1.4;
+  }
+  [hidden] { display: none !important; }
+
+  /* scrollbars */
+  * { scrollbar-width: thin; scrollbar-color: #3a3a41 transparent; }
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb {
+    background: #3a3a41;
+    border-radius: 999px;
+    border: 3px solid transparent;
+    background-clip: padding-box;
+  }
+  ::-webkit-scrollbar-thumb:hover { background: #55555d; background-clip: padding-box; }
+  ::-webkit-scrollbar-button { display: none; height: 0; width: 0; }
+  ::-webkit-scrollbar-corner { background: transparent; }
+
+  /* ---------- estructura ---------- */
+  .app {
+    display: grid;
+    grid-template-columns: minmax(340px, 440px) 1fr;
+    grid-template-areas: "head stage" "controls stage";
+    grid-template-rows: auto 1fr;
+    column-gap: 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 28px 32px 40px;
+  }
+  header { grid-area: head; padding-bottom: 20px; }
+  header h1 { margin: 0; font-size: 26px; font-weight: 800; letter-spacing: -0.02em; }
+  header p { margin: 4px 0 0; color: var(--muted); }
+  .controls { grid-area: controls; display: flex; flex-direction: column; gap: 14px; }
+  .stage {
+    grid-area: stage;
+    position: sticky;
+    top: 24px;
+    align-self: start;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+  }
+
+  /* ---------- tarjetas ---------- */
+  .card {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .card h2 {
+    margin: 0;
+    font-size: 12px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+  }
+  .field { display: flex; flex-direction: column; gap: 6px; }
+  .field > span, .label { font-size: 13px; color: var(--muted); font-weight: 600; }
+  .fields { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+  input[type=text], input[type=url] {
+    width: 100%;
+    min-width: 0;
+    background: var(--panel-2);
+    border: 1px solid var(--line);
+    color: var(--text);
+    border-radius: 12px;
+    padding: 11px 14px;
+    font: inherit;
+    font-size: 16px; /* evita el zoom automático en iPhone */
+    outline: none;
+  }
+  input[type=text]:focus, input[type=url]:focus { border-color: var(--accent); }
+  .input-row { display: flex; gap: 8px; }
+  .input-row input { flex: 1; }
+
+  /* ---------- botones ---------- */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font: inherit;
+    font-weight: 700;
+    font-size: 15px;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    background: var(--panel-2);
+    color: var(--text);
+    padding: 11px 18px;
+    cursor: pointer;
+    white-space: nowrap;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .btn:hover { border-color: var(--line-strong); }
+  .btn:disabled { opacity: .5; cursor: default; }
+  .btn.primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+  .btn.primary:hover { filter: brightness(1.08); }
+  .btn.ghost { background: transparent; }
+  .btn.small { padding: 8px 14px; font-size: 14px; }
+  .btn svg { width: 18px; height: 18px; flex: 0 0 auto; }
+  .visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  label.btn:focus-within { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  .link-btn {
+    align-self: flex-start;
+    background: none; border: 0; padding: 0;
+    color: var(--muted); font: inherit; font-size: 14px; font-weight: 600;
+    cursor: pointer; display: inline-flex; gap: 6px; align-items: center;
+  }
+  .link-btn:hover { color: var(--text); }
+  .link-btn svg { width: 16px; height: 16px; }
+
+  /* control segmentado */
+  .seg {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 1fr;
+    background: var(--panel-2);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 3px;
+  }
+  .seg button {
+    border: 0; background: transparent; color: var(--muted);
+    font: inherit; font-size: 14px; font-weight: 700;
+    padding: 8px 10px; border-radius: 999px; cursor: pointer;
+    white-space: nowrap;
+    display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .seg button svg { width: 16px; height: 16px; }
+  .seg button.on { background: var(--text); color: #111; }
+
+  /* selector de tipografía */
+  .fonts { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+  .font-opt {
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
+    background: var(--panel-2);
+    border: 1.5px solid var(--line);
+    border-radius: 12px;
+    padding: 12px 4px 10px;
+    color: var(--text);
+    cursor: pointer;
+    font: inherit;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .font-opt:hover { border-color: var(--line-strong); }
+  .font-opt.on { border-color: var(--accent); background: #1d2a22; }
+  .font-opt .sample { font-size: 28px; line-height: 1.1; }
+  .font-opt .name { font-size: 12px; color: var(--muted); font-weight: 600; text-align: center; line-height: 1.2; }
+  .hint { font-size: 13px; color: var(--muted); line-height: 1.45; margin: 0; }
+
+  /* sliders */
+  .slider { display: flex; flex-direction: column; gap: 4px; }
+  .slider-head { display: flex; justify-content: space-between; font-size: 14px; font-weight: 600; }
+  .slider-head output { color: var(--muted); font-variant-numeric: tabular-nums; }
+  input[type=range] { width: 100%; accent-color: var(--accent); margin: 4px 0; height: 24px; }
+  .check { display: flex; gap: 10px; align-items: center; font-size: 14px; font-weight: 500; cursor: pointer; }
+  .check input { accent-color: var(--accent); width: 18px; height: 18px; margin: 0; }
+
+  /* estado y resultados */
+  .status { font-size: 13px; color: var(--muted); margin: -4px 0 0; }
+  .status:empty { display: none; }
+  .status.err { color: var(--danger); }
+  .status.ok { color: var(--accent); }
+  .results { display: flex; flex-direction: column; gap: 2px; max-height: 300px; overflow-y: auto; margin: 0 -6px; padding-right: 4px; overscroll-behavior: contain; }
+  .results:empty { display: none; }
+  .result {
+    display: flex; gap: 12px; align-items: center; text-align: left;
+    border-radius: 10px; padding: 6px; background: transparent; border: 0;
+    color: var(--text); font: inherit; cursor: pointer; width: 100%;
+  }
+  .result:hover { background: var(--panel-2); }
+  .result img { width: 44px; height: 44px; border-radius: 4px; flex: 0 0 auto; background: var(--panel-2); }
+  .result div { overflow: hidden; min-width: 0; }
+  .result b, .result span { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .result b { font-weight: 700; }
+  .result span { color: var(--muted); font-size: 13px; }
+
+  /* ---------- vista previa ---------- */
+  .preview {
+    position: relative;
+    height: min(calc(100vh - 130px), 860px);
+    aspect-ratio: 9 / 16;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 30px 80px rgba(0,0,0,.6), 0 0 0 1px var(--line);
+    background: #000;
+  }
+  .preview canvas { width: 100%; height: 100%; display: block; }
+  .guide {
+    position: absolute; left: 0; right: 0; top: 12.5%; height: 75%;
+    border-top: 2px dashed rgba(255,255,255,.5);
+    border-bottom: 2px dashed rgba(255,255,255,.5);
+    pointer-events: none;
+  }
+  .guide span {
+    position: absolute; top: 8px; left: 50%; transform: translateX(-50%);
+    font-size: 11px; font-weight: 700; white-space: nowrap;
+    background: rgba(0,0,0,.6); padding: 3px 8px; border-radius: 999px; color: #fff;
+  }
+  .guide.hidden { display: none; }
+  .overlay-tools {
+    position: absolute; right: 10px; bottom: 10px;
+    display: flex; gap: 8px;
+  }
+  .icon-btn {
+    width: 42px; height: 42px; border-radius: 999px;
+    display: inline-flex; align-items: center; justify-content: center;
+    background: rgba(20,20,22,.7);
+    backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,.15);
+    color: #fff; cursor: pointer; padding: 0;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .icon-btn:hover { background: rgba(40,40,44,.85); }
+  .icon-btn svg { width: 20px; height: 20px; }
+  .icon-btn.off { opacity: .55; }
+  .actions { display: flex; gap: 10px; }
+  .actions .btn { padding: 13px 22px; font-size: 16px; }
+
+  /* ---------- móvil ---------- */
+  @media (max-width: 900px) {
+    .app {
+      grid-template-columns: 1fr;
+      grid-template-areas: "head" "stage" "controls";
+      grid-template-rows: auto;
+      padding: 16px 16px calc(96px + env(safe-area-inset-bottom));
+      row-gap: 0;
+    }
+    header { padding-bottom: 14px; }
+    header h1 { font-size: 22px; }
+    header p { font-size: 14px; }
+    .stage { position: static; margin-bottom: 18px; }
+    .preview { height: auto; width: min(100%, 460px); border-radius: 16px; }
+    .actions {
+      position: fixed; left: 0; right: 0; bottom: 0; z-index: 10;
+      padding: 12px 16px calc(12px + env(safe-area-inset-bottom));
+      background: rgba(14,14,16,.88);
+      backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+      border-top: 1px solid var(--line);
+    }
+    .actions .btn { flex: 1; padding: 13px 12px; }
+    .actions .btn.jpg { flex: 0 0 auto; }
+    .card { padding: 16px; }
+  }
+  @media (max-width: 420px) {
+    .fields { grid-template-columns: 1fr; }
+    .font-opt { flex-direction: row; justify-content: flex-start; gap: 10px; padding: 10px 12px; }
+    .font-opt .sample { font-size: 24px; width: 36px; text-align: center; }
+    .font-opt .name { text-align: left; }
+  }
+</style>
+</head>
+<body>
+<main class="app">
+  <header>
+    <h1>Portadas de Reels</h1>
+    <p>Pega un link de Spotify, ajusta el estilo y descarga en 1080 × 1920.</p>
+  </header>
+
+  <section class="controls">
+
+    <div class="card">
+      <h2>Canción</h2>
+      <div class="seg" id="sourceSeg" role="tablist">
+        <button data-src="spotify" class="on">Link de Spotify</button>
+        <button data-src="search">Buscar</button>
+      </div>
+
+      <div id="srcSpotify" class="input-row">
+        <input type="url" id="spotifyUrl" placeholder="https://open.spotify.com/track/…" inputmode="url" autocomplete="off">
+        <button class="btn primary" id="loadSpotify">Cargar</button>
+      </div>
+
+      <div id="srcSearch" hidden>
+        <div class="input-row">
+          <input type="text" id="searchTerm" placeholder="Ej: hotel california eagles" enterkeyhint="search">
+          <button class="btn primary" id="doSearch">Buscar</button>
+        </div>
+      </div>
+      <div class="results" id="results"></div>
+
+      <p class="status" id="status"></p>
+
+      <div class="fields">
+        <label class="field"><span>Título</span><input type="text" id="title" placeholder="Nombre de la canción"></label>
+        <label class="field"><span>Artista / banda</span><input type="text" id="artist" placeholder="Nombre de la banda"></label>
+      </div>
+
+      <label class="link-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.1-3.1a2 2 0 0 0-2.8 0L6 21"/></svg>
+        Usar mi propia imagen de carátula
+        <input type="file" id="coverFile" accept="image/*" class="visually-hidden">
+      </label>
+    </div>
+
+    <div class="card">
+      <h2>Tipografía</h2>
+      <div class="fonts" id="fontSeg">
+        <button class="font-opt on" data-font="spotify"><span class="sample" style="font-family:Figtree;font-weight:800">Aa</span><span class="name">Spotify</span></button>
+        <button class="font-opt" data-font="igsans"><span class="sample" style="font-family:Manrope;font-weight:800">Aa</span><span class="name">Instagram Sans</span></button>
+      </div>
+      <p class="hint" id="fontHint"></p>
+      <div class="field">
+        <span>Alineación del texto</span>
+        <div class="seg" id="alignSeg">
+          <button data-align="left" class="on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 6h16M4 12h10M4 18h13"/></svg>Izquierda</button>
+          <button data-align="center"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 6h16M7 12h10M5.5 18h13"/></svg>Centrado</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Fondo</h2>
+      <div class="seg" id="bgSeg">
+        <button data-bg="cover" class="on">De la carátula</button>
+        <button data-bg="random">Al azar</button>
+      </div>
+      <button id="shuffle" class="btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m18 14 4 4-4 4"/><path d="m18 2 4 4-4 4"/><path d="M2 18h1.97a4 4 0 0 0 3.3-1.7l5.45-8.6a4 4 0 0 1 3.3-1.7H22"/><path d="M2 6h1.97a4 4 0 0 1 3.3 1.7l.53.83"/><path d="M22 18h-6.04a4 4 0 0 1-3.3-1.8l-.36-.45"/></svg>
+        Generar otro fondo
+      </button>
+      <div class="slider">
+        <div class="slider-head"><label for="dark">Oscuridad</label><output id="darkOut">35%</output></div>
+        <input type="range" id="dark" min="0" max="85" value="35">
+      </div>
+      <label class="check"><input type="checkbox" id="grain" checked> Grano sutil (evita bandas de color)</label>
+    </div>
+
+    <div class="card">
+      <h2>Carátula</h2>
+      <div class="slider">
+        <div class="slider-head"><label for="size">Tamaño</label><output id="sizeOut">70%</output></div>
+        <input type="range" id="size" min="50" max="85" value="70">
+      </div>
+      <div class="slider">
+        <div class="slider-head"><label for="radius">Esquinas redondeadas</label><output id="radiusOut">0</output></div>
+        <input type="range" id="radius" min="0" max="60" value="0">
+      </div>
+    </div>
+
+  </section>
+
+  <section class="stage">
+    <div class="preview">
+      <canvas id="canvas" width="1080" height="1920"></canvas>
+      <div class="guide" id="guide"><span>Lo que se ve en el perfil</span></div>
+      <div class="overlay-tools">
+        <button class="icon-btn" id="toggleGuide" title="Mostrar/ocultar la guía del perfil (no sale en la descarga)" aria-label="Mostrar u ocultar la guía del perfil" aria-pressed="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2v14a2 2 0 0 0 2 2h14"/><path d="M18 22V8a2 2 0 0 0-2-2H2"/></svg>
+        </button>
+        <button class="icon-btn" id="shuffle2" title="Generar otro fondo" aria-label="Generar otro fondo">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m18 14 4 4-4 4"/><path d="m18 2 4 4-4 4"/><path d="M2 18h1.97a4 4 0 0 0 3.3-1.7l5.45-8.6a4 4 0 0 1 3.3-1.7H22"/><path d="M2 6h1.97a4 4 0 0 1 3.3 1.7l.53.83"/><path d="M22 18h-6.04a4 4 0 0 1-3.3-1.8l-.36-.45"/></svg>
+        </button>
+      </div>
+    </div>
+    <div class="actions">
+      <button class="btn primary" id="download">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/><path d="M12 15V3"/></svg>
+        Descargar PNG
+      </button>
+      <button class="btn jpg" id="downloadJpg">JPG</button>
+    </div>
+  </section>
+</main>
+
+<script>
+const W = 1080, H = 1920;
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+const $ = id => document.getElementById(id);
+
+const FONTS = {
+  spotify: {
+    title: { family: '"Figtree"', weight: 800, scale: 1 },
+    artist: { family: '"Figtree"', weight: 700, scale: 1 },
+    hint: 'Figtree: la alternativa libre más parecida a Spotify Circular / Spotify Mix (que son fuentes privadas).',
+  },
+  igsans: {
+    title: { family: '"Manrope"', weight: 800, scale: 1 },
+    artist: { family: '"Manrope"', weight: 600, scale: 1 },
+    hint: 'Manrope: la alternativa libre más parecida a Instagram Sans (que es una fuente privada).',
+  },
+};
+
+const state = {
+  img: null,
+  title: $('title').value,
+  artist: $('artist').value,
+  font: 'spotify',
+  align: 'left',
+  bg: 'cover',
+  seed: Math.floor(Math.random() * 1e9),
+  dark: 0.35,
+  size: 0.70,
+  radius: 0,
+  grain: true,
+  palette: null,
+};
+
+// ---------- utilidades ----------
+function mulberry32(a) {
+  return function () {
+    a |= 0; a = a + 0x6D2B79F5 | 0;
+    let t = Math.imul(a ^ a >>> 15, 1 | a);
+    t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+    return ((t ^ t >>> 14) >>> 0) / 4294967296;
+  };
+}
+
+function rgbToHsl(r, g, b) {
+  r /= 255; g /= 255; b /= 255;
+  const max = Math.max(r, g, b), min = Math.min(r, g, b);
+  let h = 0, s = 0; const l = (max + min) / 2;
+  if (max !== min) {
+    const d = max - min;
+    s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+    if (max === r) h = (g - b) / d + (g < b ? 6 : 0);
+    else if (max === g) h = (b - r) / d + 2;
+    else h = (r - g) / d + 4;
+    h *= 60;
+  }
+  return [h, s, l];
+}
+
+function setStatus(msg, isErr = false) {
+  const el = $('status');
+  el.textContent = msg;
+  el.classList.toggle('err', isErr);
+  el.classList.toggle('ok', !isErr && msg.startsWith('Listo'));
+}
+
+function loadImage(src) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.crossOrigin = 'anonymous';
+    img.onload = () => resolve(img);
+    img.onerror = () => reject(new Error('No se pudo cargar la imagen'));
+    img.src = src;
+  });
+}
+
+function jsonp(url) {
+  return new Promise((resolve, reject) => {
+    const cb = '__cb' + Math.random().toString(36).slice(2);
+    const s = document.createElement('script');
+    const done = () => { delete window[cb]; s.remove(); };
+    window[cb] = data => { done(); resolve(data); };
+    s.onerror = () => { done(); reject(new Error('Error de red')); };
+    s.src = url + (url.includes('?') ? '&' : '?') + 'callback=' + cb;
+    document.head.appendChild(s);
+  });
+}
+
+function cleanTitle(t) {
+  return t
+    .replace(/\s+-\s+(\d{4}\s+)?(remaster|remastered|live|mono|stereo|single|radio|edit|version|versión|en vivo|acoustic|bonus|deluxe).*$/i, '')
+    .replace(/\s*[\(\[](\d{4}\s+)?(remaster|remastered|live|mono|stereo|radio edit|single version|en vivo)[^\)\]]*[\)\]]/ig, '')
+    .trim();
+}
+
+// ---------- paleta de colores de la carátula ----------
+function extractPalette(img) {
+  const c = document.createElement('canvas');
+  c.width = c.height = 32;
+  const x = c.getContext('2d', { willReadFrequently: true });
+  x.drawImage(img, 0, 0, 32, 32);
+  let data;
+  try { data = x.getImageData(0, 0, 32, 32).data; }
+  catch (e) { return null; }
+  const buckets = new Map();
+  for (let i = 0; i < data.length; i += 4) {
+    const [h, s, l] = rgbToHsl(data[i], data[i + 1], data[i + 2]);
+    if (l < 0.06 || l > 0.97) continue;
+    const key = Math.round(h / 20) + ':' + Math.round(s * 3);
+    const b = buckets.get(key) || { h: 0, s: 0, l: 0, n: 0 };
+    b.h += h; b.s += s; b.l += l; b.n++;
+    buckets.set(key, b);
+  }
+  const colors = [...buckets.values()]
+    .map(b => ({ h: b.h / b.n, s: b.s / b.n, l: b.l / b.n, w: b.n * (0.35 + b.s / b.n) }))
+    .sort((a, b) => b.w - a.w)
+    .slice(0, 6);
+  return colors.length ? colors : null;
+}
+
+// ---------- dibujo ----------
+let grainCanvas = null;
+function getGrain() {
+  if (grainCanvas) return grainCanvas;
+  grainCanvas = document.createElement('canvas');
+  grainCanvas.width = grainCanvas.height = 256;
+  const g = grainCanvas.getContext('2d');
+  const id = g.createImageData(256, 256);
+  for (let i = 0; i < id.data.length; i += 4) {
+    const v = Math.random() * 255;
+    id.data[i] = id.data[i + 1] = id.data[i + 2] = v;
+    id.data[i + 3] = 255;
+  }
+  g.putImageData(id, 0, 0);
+  return grainCanvas;
+}
+
+function drawBackground() {
+  const rnd = mulberry32(state.seed);
+  let colors;
+  if (state.bg === 'cover' && state.palette) {
+    colors = state.palette.map(c => ({
+      h: c.h + (rnd() - 0.5) * 16,
+      s: Math.min(0.85, Math.max(0.3, c.s * 1.15)),
+      l: Math.min(0.55, Math.max(0.28, c.l)),
+    }));
+  } else {
+    const baseHue = rnd() * 360;
+    colors = Array.from({ length: 4 }, (_, i) => ({
+      h: (baseHue + (rnd() - 0.5) * 120 + i * 25) % 360,
+      s: 0.45 + rnd() * 0.4,
+      l: 0.3 + rnd() * 0.22,
+    }));
+  }
+  const hsl = (c, a = 1) => `hsla(${c.h.toFixed(1)}, ${(c.s * 100).toFixed(1)}%, ${(c.l * 100).toFixed(1)}%, ${a})`;
+
+  // base oscura teñida con el color dominante
+  const base = colors[0];
+  ctx.fillStyle = hsl({ h: base.h, s: base.s * 0.6, l: 0.09 });
+  ctx.fillRect(0, 0, W, H);
+
+  // manchas de color grandes y suaves
+  const blobs = 7 + Math.floor(rnd() * 4);
+  for (let i = 0; i < blobs; i++) {
+    const c = colors[Math.floor(rnd() * colors.length)];
+    const x = rnd() * W;
+    const y = rnd() * H;
+    const r = 450 + rnd() * 750;
+    const a = 0.45 + rnd() * 0.45;
+    const g = ctx.createRadialGradient(x, y, 0, x, y, r);
+    g.addColorStop(0, hsl(c, a));
+    g.addColorStop(0.5, hsl(c, a * 0.45));
+    g.addColorStop(1, hsl(c, 0));
+    ctx.fillStyle = g;
+    ctx.fillRect(0, 0, W, H);
+  }
+
+  // oscurecer
+  ctx.fillStyle = `rgba(0,0,0,${state.dark})`;
+  ctx.fillRect(0, 0, W, H);
+
+  // viñeta
+  const v = ctx.createRadialGradient(W / 2, H / 2, H * 0.25, W / 2, H / 2, H * 0.75);
+  v.addColorStop(0, 'rgba(0,0,0,0)');
+  v.addColorStop(1, 'rgba(0,0,0,0.55)');
+  ctx.fillStyle = v;
+  ctx.fillRect(0, 0, W, H);
+
+  if (state.grain) {
+    ctx.save();
+    ctx.globalAlpha = 0.035;
+    ctx.fillStyle = ctx.createPattern(getGrain(), 'repeat');
+    ctx.fillRect(0, 0, W, H);
+    ctx.restore();
+  }
+}
+
+function roundRectPath(x, y, w, h, r) {
+  ctx.beginPath();
+  if (ctx.roundRect) ctx.roundRect(x, y, w, h, r);
+  else ctx.rect(x, y, w, h);
+}
+
+function fontStr(f, px) { return `${f.weight} ${px}px ${f.family}`; }
+
+function wrapLines(text, font, maxW, maxLines) {
+  ctx.font = font;
+  const words = text.split(/\s+/).filter(Boolean);
+  const lines = [];
+  let cur = '';
+  for (const w of words) {
+    const test = cur ? cur + ' ' + w : w;
+    if (ctx.measureText(test).width <= maxW || !cur) cur = test;
+    else { lines.push(cur); cur = w; }
+  }
+  if (cur) lines.push(cur);
+  if (lines.length > maxLines) return null;
+  if (lines.some(l => ctx.measureText(l).width > maxW)) return null;
+  return lines;
+}
+
+function fitText(text, f, basePx, maxW, maxLines) {
+  let px = basePx;
+  while (px > 20) {
+    const lines = wrapLines(text, fontStr(f, px), maxW, maxLines);
+    if (lines) return { lines, px };
+    px -= 2;
+  }
+  return { lines: [text], px };
+}
+
+function render() {
+  drawBackground();
+
+  const preset = FONTS[state.font];
+  const size = Math.round(W * state.size);
+  const x = Math.round((W - size) / 2);
+
+  const titlePx = Math.round(size * 0.087 * preset.title.scale);
+  const artistPx = Math.round(size * 0.058 * preset.artist.scale);
+  const title = fitText(state.title || 'Nombre de la canción', preset.title, titlePx, size, 2);
+  const artist = fitText(state.artist || 'Nombre de la banda', preset.artist, artistPx, size, 1);
+  const titleLH = title.px * 1.15;
+  const gap1 = size * 0.065;
+  const gap2 = artist.px * 0.35;
+  const blockH = size + gap1 + titleLH * title.lines.length + gap2 + artist.px * 1.2;
+  // centrado dentro de la zona 3:4 del perfil, un poco hacia arriba como el reproductor de Spotify
+  const y = Math.round((H - blockH) / 2 - H * 0.01);
+
+  // carátula
+  ctx.save();
+  ctx.shadowColor = 'rgba(0,0,0,0.55)';
+  ctx.shadowBlur = 70;
+  ctx.shadowOffsetY = 24;
+  roundRectPath(x, y, size, size, state.radius);
+  ctx.fillStyle = '#111';
+  ctx.fill();
+  ctx.restore();
+
+  ctx.save();
+  roundRectPath(x, y, size, size, state.radius);
+  ctx.clip();
+  if (state.img) {
+    const iw = state.img.naturalWidth, ih = state.img.naturalHeight;
+    const s = Math.min(iw, ih);
+    ctx.imageSmoothingQuality = 'high';
+    ctx.drawImage(state.img, (iw - s) / 2, (ih - s) / 2, s, s, x, y, size, size);
+  } else {
+    ctx.fillStyle = '#2a2a2e';
+    ctx.fillRect(x, y, size, size);
+    ctx.fillStyle = '#6b6b73';
+    ctx.font = '600 40px "Figtree"';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('Carga una canción', W / 2, y + size / 2);
+  }
+  ctx.restore();
+
+  // textos
+  const tx = state.align === 'center' ? W / 2 : x;
+  ctx.textAlign = state.align === 'center' ? 'center' : 'left';
+  ctx.textBaseline = 'top';
+  let ty = y + size + gap1;
+
+  ctx.fillStyle = '#ffffff';
+  ctx.font = fontStr(preset.title, title.px);
+  for (const line of title.lines) {
+    ctx.fillText(line, tx, ty);
+    ty += titleLH;
+  }
+  ty += gap2;
+  ctx.fillStyle = 'rgba(255,255,255,0.62)';
+  ctx.font = fontStr(preset.artist, artist.px);
+  ctx.fillText(artist.lines[0], tx, ty);
+}
+
+async function rerender() {
+  const p = FONTS[state.font];
+  try {
+    await Promise.all([
+      document.fonts.load(fontStr(p.title, 80), state.title || 'A'),
+      document.fonts.load(fontStr(p.artist, 50), state.artist || 'A'),
+    ]);
+  } catch (e) { /* sigue con la fuente de respaldo */ }
+  render();
+}
+
+// ---------- carga de canciones ----------
+async function setCover(src, { title, artist } = {}) {
+  setStatus('Cargando carátula…');
+  try {
+    const img = await loadImage(src);
+    state.img = img;
+    state.palette = extractPalette(img);
+    if (title != null) { state.title = title; $('title').value = title; }
+    if (artist != null) { state.artist = artist; $('artist').value = artist; }
+    state.seed = Math.floor(Math.random() * 1e9);
+    setStatus(state.palette ? 'Listo ✓' : 'Listo ✓ (no se pudieron leer los colores; usa "Colores al azar")');
+    await rerender();
+    if (matchMedia('(max-width: 900px)').matches) {
+      document.querySelector('.preview').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  } catch (e) {
+    setStatus(e.message, true);
+  }
+}
+
+async function guessArtist(title) {
+  try {
+    const res = await jsonp('https://itunes.apple.com/search?entity=song&limit=1&term=' + encodeURIComponent(title));
+    return res.results?.[0]?.artistName || null;
+  } catch (e) { return null; }
+}
+
+async function loadSpotify() {
+  const raw = $('spotifyUrl').value.trim();
+  const m = raw.match(/open\.spotify\.com\/(?:intl-[a-z]+\/)?(track|album)\/([A-Za-z0-9]+)/);
+  if (!m) { setStatus('Pega un link de canción o álbum de Spotify (open.spotify.com/track/…)', true); return; }
+  const url = `https://open.spotify.com/${m[1]}/${m[2]}`;
+  setStatus('Buscando en Spotify…');
+  $('loadSpotify').disabled = true;
+  try {
+    const r = await fetch('https://open.spotify.com/oembed?url=' + encodeURIComponent(url));
+    if (!r.ok) throw new Error('Spotify no respondió (' + r.status + ')');
+    const j = await r.json();
+    const title = cleanTitle(j.title || '');
+    // pedir la versión de 640px de la carátula
+    const id = (j.thumbnail_url.match(/image\/([a-f0-9]+)/) || [])[1];
+    const src = id ? 'https://i.scdn.co/image/' + id.replace(/^(ab67616d)0000[0-9a-f]{4}/, '$10000b273') : j.thumbnail_url;
+    setStatus('Buscando el artista…');
+    const artist = await guessArtist(j.title);
+    await setCover(src, { title, artist: artist ?? $('artist').value });
+    if (artist) setStatus('Listo ✓ — revisa que el artista sea correcto (Spotify no lo envía, se adivinó).');
+  } catch (e) {
+    setStatus(e.message || 'Error cargando el link', true);
+  } finally {
+    $('loadSpotify').disabled = false;
+  }
+}
+
+async function doSearch() {
+  const term = $('searchTerm').value.trim();
+  if (!term) return;
+  setStatus('Buscando…');
+  try {
+    const res = await jsonp('https://itunes.apple.com/search?entity=song&limit=12&term=' + encodeURIComponent(term));
+    const box = $('results');
+    box.innerHTML = '';
+    if (!res.results.length) { setStatus('Sin resultados'); return; }
+    setStatus('');
+    for (const r of res.results) {
+      const b = document.createElement('button');
+      b.className = 'result';
+      const img = document.createElement('img');
+      img.src = r.artworkUrl100;
+      img.alt = '';
+      const d = document.createElement('div');
+      const t = document.createElement('b'); t.textContent = r.trackName;
+      const a = document.createElement('span'); a.textContent = r.artistName + ' · ' + (r.collectionName || '');
+      d.append(t, a);
+      b.append(img, d);
+      b.onclick = () => setCover(r.artworkUrl100.replace(/\/\d+x\d+bb\./, '/1200x1200bb.'), {
+        title: cleanTitle(r.trackName), artist: r.artistName,
+      });
+      box.appendChild(b);
+    }
+  } catch (e) {
+    setStatus(e.message, true);
+  }
+}
+
+// ---------- descarga ----------
+function slug(s) {
+  return (s || 'portada').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'portada';
+}
+function download(type) {
+  try {
+    canvas.toBlob(blob => {
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = `portada-${slug(state.title)}.${type === 'image/png' ? 'png' : 'jpg'}`;
+      a.click();
+      setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+    }, type, 0.95);
+  } catch (e) {
+    setStatus('El navegador bloqueó la exportación de esta imagen. Descárgala y usa "Subir carátula propia".', true);
+  }
+}
+
+// ---------- eventos ----------
+function segment(id, attr, onPick) {
+  $(id).addEventListener('click', e => {
+    const b = e.target.closest('button[data-' + attr + ']');
+    if (!b) return;
+    $(id).querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b));
+    onPick(b.dataset[attr]);
+  });
+}
+
+segment('sourceSeg', 'src', v => {
+  $('srcSpotify').hidden = v !== 'spotify';
+  $('srcSearch').hidden = v !== 'search';
+  $('results').hidden = v !== 'search';
+  setStatus('');
+  (v === 'search' ? $('searchTerm') : $('spotifyUrl')).focus();
+});
+segment('fontSeg', 'font', v => {
+  state.font = v;
+  $('fontHint').textContent = FONTS[v].hint;
+  rerender();
+});
+segment('alignSeg', 'align', v => { state.align = v; render(); });
+segment('bgSeg', 'bg', v => { state.bg = v; render(); });
+
+$('loadSpotify').onclick = loadSpotify;
+$('spotifyUrl').addEventListener('keydown', e => { if (e.key === 'Enter') loadSpotify(); });
+$('spotifyUrl').addEventListener('paste', () => setTimeout(loadSpotify, 0));
+$('doSearch').onclick = doSearch;
+$('searchTerm').addEventListener('keydown', e => { if (e.key === 'Enter') doSearch(); });
+
+$('title').addEventListener('input', e => { state.title = e.target.value; rerender(); });
+$('artist').addEventListener('input', e => { state.artist = e.target.value; rerender(); });
+
+$('coverFile').addEventListener('change', e => {
+  const f = e.target.files[0];
+  if (f) setCover(URL.createObjectURL(f));
+});
+
+$('shuffle').onclick = $('shuffle2').onclick = () => { state.seed = Math.floor(Math.random() * 1e9); render(); };
+
+function slider(id, outId, fmt, apply) {
+  const el = $(id);
+  const update = () => { $(outId).textContent = fmt(+el.value); apply(+el.value); render(); };
+  el.addEventListener('input', update);
+}
+slider('dark', 'darkOut', v => v + '%', v => state.dark = v / 100);
+slider('size', 'sizeOut', v => v + '%', v => state.size = v / 100);
+slider('radius', 'radiusOut', v => String(v), v => state.radius = v);
+$('grain').onchange = e => { state.grain = e.target.checked; render(); };
+$('toggleGuide').onclick = e => {
+  const btn = e.currentTarget;
+  const on = $('guide').classList.toggle('hidden');
+  btn.classList.toggle('off', on);
+  btn.setAttribute('aria-pressed', String(!on));
+};
+
+$('download').onclick = () => download('image/png');
+$('downloadJpg').onclick = () => download('image/jpeg');
+
+$('fontHint').textContent = FONTS.spotify.hint;
+document.fonts.ready.then(rerender);
+rerender();
+</script>
+</body>
+</html>
